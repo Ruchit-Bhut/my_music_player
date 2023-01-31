@@ -9,21 +9,21 @@ class FavSongProvider with ChangeNotifier {
   List<MusicModel> songdata = [];
 
   void addToFav(MusicModel songModel) {
-    fav.add(int.parse(songModel.id.toString()));
+    fav.add(songModel.id);
     songdata.add(songModel);
     setLocal();
     notifyListeners();
   }
 
   void remFav(MusicModel songModel) {
-    fav.remove(int.parse(songModel.id.toString()));
+    fav.remove(songModel.id);
     songdata.remove(songModel);
     setLocal();
     notifyListeners();
   }
 
   bool isFav(MusicModel songModel) {
-    return fav.contains(int.parse(songModel.id.toString()));
+    return fav.contains(songModel.id);
   }
 
   Future<void> setLocal() async {

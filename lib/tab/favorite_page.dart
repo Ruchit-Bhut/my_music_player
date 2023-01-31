@@ -39,83 +39,87 @@ class _FavoriteSongsState extends State<FavoriteSongs> {
         itemCount: context.watch<FavSongProvider>().songdata.length,
         itemBuilder: (context, index) {
           final data = context.watch<FavSongProvider>().songdata[index];
-          return context.watch<FavSongProvider>().isFav(data)
-              ? Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.white10,
-                  ),
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
-                  child: ListTile(
-                    onTap: () {
-                      context.read<FavSongProvider>().isFav(data);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (context) => PlayMusicScreen(
-                            musicModel: data,
+          return InkWell(
+            onDoubleTap: (){
+              context.read<FavSongProvider>().remFav(data);
+            },
+            child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white10,
+                    ),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    child: ListTile(
+                      onTap: () {
+                        context.read<FavSongProvider>().isFav(data);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (context) => PlayMusicScreen(
+                              musicModel: data,
+                            ),
+                          ),
+                        );
+                      },
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: QueryArtworkWidget(
+                          id: int.parse(data.id.toString()),
+                          type: ArtworkType.AUDIO,
+                          artworkHeight: 50,
+                          artworkWidth: 50,
+                          nullArtworkWidget: Image.asset(
+                            'assets/icons/music.png',
+                            height: 50,
+                            width: 50,
                           ),
                         ),
-                      );
-                    },
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: QueryArtworkWidget(
-                        id: int.parse(data.id.toString()),
-                        type: ArtworkType.AUDIO,
-                        artworkHeight: 50,
-                        artworkWidth: 50,
-                        nullArtworkWidget: Image.asset(
-                          'assets/icons/music.png',
-                          height: 50,
-                          width: 50,
+                      ),
+                      title: Text(
+                        data.songName.toString(),
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
                         ),
                       ),
-                    ),
-                    title: Text(
-                      data.songName.toString(),
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
+                      subtitle: Text(
+                        data.artistName,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.white60,
+                        ),
                       ),
-                    ),
-                    subtitle: Text(
-                      '${data.artistName}',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.white60,
+                      trailing: InkWell(
+                        onTap: () {
+                          if (context.read<FavSongProvider>().isFav(
+                                data,
+                              )) {
+                            context.read<FavSongProvider>().remFav(data);
+                          } else {
+                            context
+                                .read<FavSongProvider>()
+                                .addToFav(data);
+                          }
+                        },
+                        child: context.watch<FavSongProvider>().isFav(data)
+                            ? const Icon(
+                                Icons.favorite,
+                                color: Colors.pink,
+                                size: 30,
+                              )
+                            : const Icon(
+                                Icons.favorite_outline_rounded,
+                                color: Colors.white,
+                                size: 30,
+                              ),
                       ),
-                    ),
-                    trailing: InkWell(
-                      onTap: () {
-                        if (context.read<FavSongProvider>().isFav(
-                              data,
-                            )) {
-                          context.read<FavSongProvider>().remFav(data);
-                        } else {
-                          context
-                              .read<FavSongProvider>()
-                              .addToFav(data);
-                        }
-                      },
-                      child: context.watch<FavSongProvider>().isFav(data)
-                          ? const Icon(
-                              Icons.favorite,
-                              color: Colors.pink,
-                              size: 30,
-                            )
-                          : const Icon(
-                              Icons.favorite_outline_rounded,
-                              color: Colors.white,
-                              size: 30,
-                            ),
                     ),
                   ),
-                )
-              : const SizedBox();
+          );
+
         },
       ),
     );

@@ -1,9 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:my_music_player/model/song_model.dart';
+import 'package:my_music_player/provider/fav_song_provider.dart';
 import 'package:my_music_player/tab/favorite_page.dart';
 import 'package:my_music_player/tab/online_songs.dart';
 import 'package:my_music_player/tab/show_internal_music.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
 class ShowTab extends StatefulWidget {
   const ShowTab({super.key});
@@ -13,8 +16,39 @@ class ShowTab extends StatefulWidget {
 }
 
 class _ShowTabState extends State<ShowTab> {
-  final OnAudioQuery audioQuery = OnAudioQuery();
+  @override
+  void initState() {
+    super.initState();
+    requestPermission();
+    _searchingController.addListener(() {
+      filterSongs();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  List<MusicModel> songFiltered = [];
   final TextEditingController _searchingController = TextEditingController();
+
+  filterSongs() {
+    List<MusicModel> music = [];
+    music.addAll(context.read<FavSongProvider>().songdata);
+    if(_searchingController.text.isNotEmpty){
+      music.retainWhere((context){
+        String searchTerm = _searchingController.text.toLowerCase();
+        String musicName = context.songName.toLowerCase();
+        return musicName.contains(searchTerm);
+      });
+      setState(() {
+        songFiltered = music;
+      });
+    }
+  }
+
+  final OnAudioQuery audioQuery = OnAudioQuery();
 
   Future<void> requestPermission() async {
     if (!kIsWeb) {
@@ -24,17 +58,6 @@ class _ShowTabState extends State<ShowTab> {
       }
       setState(() {});
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    requestPermission();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -66,8 +89,7 @@ class _ShowTabState extends State<ShowTab> {
                   style: const TextStyle(color: Colors.white),
                   cursorColor: Colors.grey,
                   decoration: InputDecoration(
-                    fillColor:
-                        const Color(0xff30164e),
+                    fillColor: Colors.black12,
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -84,15 +106,15 @@ class _ShowTabState extends State<ShowTab> {
                       child: Image.asset('assets/icons/search.png'),
                     ),
                     suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(_searchingController.clear);
-                            },
-                            icon: const Icon(
-                              Icons.close,
-                              size: 28,
-                              color: Colors.white,
-                            ),
-                          ),
+                      onPressed: () {
+                        setState(_searchingController.clear);
+                      },
+                      icon: const Icon(
+                        Icons.close,
+                        size: 28,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -126,12 +148,13 @@ class _ShowTabState extends State<ShowTab> {
                   ),
                 ],
               ),
-               Expanded(
+              Expanded(
                 child: TabBarView(
                   children: [
-                    ShowInternalMusic(searchingController:_searchingController),
-                    FavoriteSongs(),
-                    OnlineSongs(),
+                    ShowInternalMusic(
+                        searchingController: _searchingController),
+                    const FavoriteSongs(),
+                    const OnlineSongs(),
                   ],
                 ),
               ),

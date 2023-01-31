@@ -2,18 +2,18 @@
 
 class MusicModel {
   MusicModel({
-     this.id,
-     this.songName,
-     this.artistName,
-    this.image,
-    this.uri,
+     required this.id,
+     required this.songName,
+     required this.artistName,
+    required this.image,
+    required this.uri
   });
 
-  String? id;
-  String? songName;
-  String? artistName;
-  String? image;
-  String? uri;
+  int id;
+  String songName;
+  String artistName;
+  String image;
+  String uri;
 
   factory MusicModel.fromMap(Map<String, dynamic> json) => MusicModel(
     id: json['id'],

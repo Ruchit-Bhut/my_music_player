@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs
+// ignore_for_file: public_member_api_docs, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:my_music_player/model/song_model.dart';
@@ -17,6 +17,7 @@ class ShowInternalMusic extends StatefulWidget {
 }
 
 class _ShowInternalMusicState extends State<ShowInternalMusic> {
+
   @override
   void initState() {
     super.initState();
@@ -25,7 +26,7 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<SongModel>>(
+    return FutureBuilder(
       future: AudioRepository.instance.getAllSongs(),
       builder: (context, item) {
         if (item.data == null) {
@@ -43,11 +44,11 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             itemCount: item.data!.length,
             itemBuilder: (context, index) {
               MusicModel musicModel = MusicModel(
-                  id: item.data![index].id.toString(),
+                  id: item.data![index].id,
                   songName: item.data![index].displayNameWOExt,
-                  artistName: item.data![index].artist,
-                  image: item.data![index].album,
-                uri: item.data![index].uri,
+                  artistName: item.data![index].artist.toString(),
+                  image: item.data![index].album.toString(),
+                uri: item.data![index].uri.toString(),
               );
               return Container(
                 decoration: BoxDecoration(
@@ -91,7 +92,7 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                     ),
                   ),
                   subtitle: Text(
-                    '${musicModel.artistName}',
+                    musicModel.artistName,
                     style: const TextStyle(
                       fontSize: 13,
                       color: Colors.white60,

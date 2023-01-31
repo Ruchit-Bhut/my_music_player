@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
@@ -27,7 +29,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     SongDuration();
   }
 
-  void SongDuration() {
+  Future<void> SongDuration() async {
     Player.instance.playSong(widget.musicModel.uri);
   }
 
