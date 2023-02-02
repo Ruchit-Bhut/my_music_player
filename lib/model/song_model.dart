@@ -5,6 +5,7 @@ class MusicModel {
     required this.artistName,
     required this.image,
     required this.uri,
+    required this.duration,
   });
 
   int id;
@@ -12,6 +13,7 @@ class MusicModel {
   String artistName;
   String image;
   String uri;
+  int duration;
 
   factory MusicModel.fromMap(Map<String, dynamic> json) => MusicModel(
         id: json['id'],
@@ -19,6 +21,7 @@ class MusicModel {
         artistName: json['artistName'],
         image: json['image'],
         uri: json['uri'],
+        duration: json['duration'],
       );
 
   static Map<String, dynamic> toMap(MusicModel musicModel) => {
@@ -27,5 +30,6 @@ class MusicModel {
         'artistName': musicModel.artistName,
         'image': musicModel.image,
         'uri': musicModel.uri,
+        'duration': musicModel.duration,
       };
 }

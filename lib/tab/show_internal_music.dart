@@ -48,10 +48,11 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             itemBuilder: (context, index) {
               MusicModel musicModel = MusicModel(
                   id: item.data![index].id,
-                  songName: item.data![index].displayNameWOExt,
+                  songName: item.data![index].displayNameWOExt.toString(),
                   artistName: item.data![index].artist.toString(),
                   image: item.data![index].album.toString(),
                 uri: item.data![index].uri.toString(),
+                duration: item.data![index].duration!,
               );
               return Container(
                 decoration: BoxDecoration(
@@ -68,6 +69,7 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                       context,
                       MaterialPageRoute<dynamic>(
                         builder: (context) => PlayMusicScreen(
+                          audioPlayer: _audioPlayer,
                           musicModel: musicModel,
                         ),
                       ),
@@ -78,6 +80,7 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                     child: QueryArtworkWidget(
                       id: int.parse(musicModel.id.toString()),
                       type: ArtworkType.AUDIO,
+                      keepOldArtwork: true,
                       artworkHeight: 50,
                       artworkWidth: 50,
                       nullArtworkWidget: Image.asset(

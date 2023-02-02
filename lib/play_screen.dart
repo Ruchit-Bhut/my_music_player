@@ -1,31 +1,33 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
-import 'package:my_music_player/singleton_class/player.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
+import 'package:just_audio/just_audio.dart';
 
 class PlayMusicScreen extends StatefulWidget {
   const PlayMusicScreen({
     super.key,
     required this.musicModel,
+    required this.audioPlayer,
   });
 
   final MusicModel musicModel;
+  final AudioPlayer audioPlayer;
 
   @override
   State<PlayMusicScreen> createState() => _PlayMusicScreenState();
 }
 
 class _PlayMusicScreenState extends State<PlayMusicScreen> {
+  Duration _position = const Duration();
+  Duration _duration = const Duration();
   bool _isPlaying = false;
-  final _position = Duration.zero;
-  final _duration = Duration.zero;
-
 
   @override
   void initState() {
@@ -33,12 +35,35 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     SongDuration();
   }
 
+  void SongDuration() {
+    try {
+      widget.audioPlayer.setAudioSource(
+        AudioSource.uri(
+          Uri.parse(widget.musicModel.uri),
+        ),
+      );
+      widget.audioPlayer.play();
+      _isPlaying = true;
+    } on Exception {
+      stdout.write('Error parsing song');
+    }
+    widget.audioPlayer.durationStream.listen((d) {
+      setState(() {
+        _duration = d!;
+      });
+    });
 
-  Future<void> SongDuration() async {
-    Player.instance.playSong(widget.musicModel.uri);
+    widget.audioPlayer.positionStream.listen((p) {
+      setState(() {
+        _position = p;
+      });
+    });
   }
 
-  final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
+  void changeToSeconds(int seconds) {
+    Duration duration = Duration(seconds: seconds);
+    widget.audioPlayer.seek(duration);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +126,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                 QueryArtworkWidget(
                   id: int.parse(widget.musicModel.id.toString()),
                   type: ArtworkType.AUDIO,
+                  keepOldArtwork: true,
                   artworkHeight: 350,
                   artworkWidth: 350,
                   nullArtworkWidget: Image.asset(
@@ -134,29 +160,31 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                               if (context
                                   .read<FavSongProvider>()
                                   .isFav(widget.musicModel)) {
-                                context.read<FavSongProvider>().remFav(
-                                    widget.musicModel);
+                                context
+                                    .read<FavSongProvider>()
+                                    .remFav(widget.musicModel);
                               } else {
-                                context.read<FavSongProvider>().addToFav(
-                                    widget.musicModel);
+                                context
+                                    .read<FavSongProvider>()
+                                    .addToFav(widget.musicModel);
                               }
                             },
                             child: SizedBox(
                               height: 20,
                               width: 20,
                               child: context
-                                  .watch<FavSongProvider>()
-                                  .isFav(widget.musicModel)
+                                      .watch<FavSongProvider>()
+                                      .isFav(widget.musicModel)
                                   ? const Icon(
-                                Icons.favorite,
-                                color: Colors.pink,
-                                size: 30,
-                              )
+                                      Icons.favorite,
+                                      color: Colors.pink,
+                                      size: 30,
+                                    )
                                   : const Icon(
-                                Icons.favorite_outline_rounded,
-                                color: Colors.white,
-                                size: 30,
-                              ),
+                                      Icons.favorite_outline_rounded,
+                                      color: Colors.white,
+                                      size: 30,
+                                    ),
                             ),
                           )
                         ],
@@ -167,7 +195,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                             : widget.musicModel.artistName.toString(),
                         maxLines: 1,
                         style:
-                        const TextStyle(color: Colors.grey, fontSize: 20),
+                            const TextStyle(color: Colors.grey, fontSize: 20),
                       ),
                     ],
                   ),
@@ -181,47 +209,38 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       child: Row(
                         children: [
-                          // Text(formatTime(_position.inSeconds),
-                          //   // _position.toString().split('.')[0],
-                          //   style: const TextStyle(
-                          //     color: Colors.white,
-                          //     fontSize: 20,
-                          //   ),
-                          // ),
+                          Text(
+                            _position.toString().split(".")[0],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
                           Expanded(
-                            child:
-
-                      StreamBuilder<Duration>(
-                        stream: _assetsAudioPlayer.currentPosition,
-                        builder: (BuildContext context, AsyncSnapshot <Duration> snapshot) {
-
-                          final Duration? currentDuration = snapshot.data;
-                          final int milliseconds = currentDuration!.inMilliseconds;
-                          final int songDurationInMilliseconds = snapshot.data!.inMilliseconds;
-
-                          return Slider(
-                            min: 0,
-                            max: songDurationInMilliseconds.toDouble(),
-                            value: songDurationInMilliseconds > milliseconds
-                                ? milliseconds.toDouble()
-                                : songDurationInMilliseconds.toDouble(),
-                            onChanged: (double value) {
-                              _assetsAudioPlayer.seek(Duration(milliseconds: value ~/ 1000.0));
-                            },
-                            activeColor: Colors.blue,
-                            inactiveColor: Colors.grey,
-                          );
-                        },
-                      ),
-                          // Text(formatTime((_duration-_position).inSeconds),
-                          //   // _duration.toString().split('.')[0],
-                          //   style: const TextStyle(
-                          //     color: Colors.white,
-                          //     fontSize: 20,
-                          //   ),
-                          // ),
-                          ), ],
-
+                            child: Slider(
+                              activeColor: Colors.white,
+                              inactiveColor: Colors.white12,
+                              value: _position.inSeconds.toDouble(),
+                              min: const Duration(microseconds: 0)
+                                  .inSeconds
+                                  .toDouble(),
+                              max: _duration.inSeconds.toDouble(),
+                              onChanged: (value) {
+                                setState(() {
+                                  changeToSeconds(value.toInt());
+                                  value = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Text(
+                            _duration.toString().split(".")[0],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(
@@ -244,18 +263,16 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                           color: Colors.white,
                           onPressed: () {
                             setState(() {
-                              if (!_isPlaying) {
-                                Player.instance.pause();
+                              if (_isPlaying) {
+                                widget.audioPlayer.pause();
                               } else {
-                                Player.instance.play();
+                                widget.audioPlayer.play();
                               }
                               _isPlaying = !_isPlaying;
                             });
                           },
                           icon: Icon(
-                            !_isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
+                            _isPlaying ? Icons.pause : Icons.play_arrow,
                           ),
                         ),
                         const SizedBox(
