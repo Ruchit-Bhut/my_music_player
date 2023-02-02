@@ -17,7 +17,7 @@ class FavSongProvider with ChangeNotifier {
 
   void remFav(MusicModel songModel) {
     fav.remove(songModel.id);
-    songdata.remove(songModel);
+    songdata.removeWhere((e) => e.id == songModel.id);
     setLocal();
     notifyListeners();
   }

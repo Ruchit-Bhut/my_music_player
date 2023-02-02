@@ -8,6 +8,8 @@ class Player {
 
   final _audioPlayer = AudioPlayer();
   final songList = AudioRepository.instance.songList;
+  final _position = Duration.zero;
+  final _duration = Duration.zero;
 
   factory Player() {
     return instance;
@@ -32,5 +34,8 @@ class Player {
 
   void pause() {
     _audioPlayer.pause();
+  }
+  seekTo(double percent) {
+    _audioPlayer.seek(Duration(milliseconds: percent.toInt()));
   }
 }

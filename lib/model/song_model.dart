@@ -1,12 +1,10 @@
-
-
 class MusicModel {
   MusicModel({
-     required this.id,
-     required this.songName,
-     required this.artistName,
+    required this.id,
+    required this.songName,
+    required this.artistName,
     required this.image,
-    required this.uri
+    required this.uri,
   });
 
   int id;
@@ -16,18 +14,18 @@ class MusicModel {
   String uri;
 
   factory MusicModel.fromMap(Map<String, dynamic> json) => MusicModel(
-    id: json['id'],
-    songName: json['songName'],
-    artistName: json['artistName'],
-    image: json['image'],
-    uri: json['uri'],
-  );
+        id: json['id'],
+        songName: json['songName'],
+        artistName: json['artistName'],
+        image: json['image'],
+        uri: json['uri'],
+      );
 
   static Map<String, dynamic> toMap(MusicModel musicModel) => {
-    'id': musicModel.id,
-    'songName': musicModel.songName,
-    'artistName': musicModel.artistName,
-    'image': musicModel.image,
-    'uri':musicModel.uri,
-  };
+        'id': musicModel.id,
+        'songName': musicModel.songName,
+        'artistName': musicModel.artistName,
+        'image': musicModel.image,
+        'uri': musicModel.uri,
+      };
 }

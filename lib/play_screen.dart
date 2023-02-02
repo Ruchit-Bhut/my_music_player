@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
@@ -22,6 +23,9 @@ class PlayMusicScreen extends StatefulWidget {
 
 class _PlayMusicScreenState extends State<PlayMusicScreen> {
   bool _isPlaying = false;
+  final _position = Duration.zero;
+  final _duration = Duration.zero;
+
 
   @override
   void initState() {
@@ -29,9 +33,12 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     SongDuration();
   }
 
+
   Future<void> SongDuration() async {
     Player.instance.playSong(widget.musicModel.uri);
   }
+
+  final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -138,18 +145,18 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                               height: 20,
                               width: 20,
                               child: context
-                                      .watch<FavSongProvider>()
-                                      .isFav(widget.musicModel)
+                                  .watch<FavSongProvider>()
+                                  .isFav(widget.musicModel)
                                   ? const Icon(
-                                      Icons.favorite,
-                                      color: Colors.pink,
-                                      size: 30,
-                                    )
+                                Icons.favorite,
+                                color: Colors.pink,
+                                size: 30,
+                              )
                                   : const Icon(
-                                      Icons.favorite_outline_rounded,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
+                                Icons.favorite_outline_rounded,
+                                color: Colors.white,
+                                size: 30,
+                              ),
                             ),
                           )
                         ],
@@ -160,7 +167,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                             : widget.musicModel.artistName.toString(),
                         maxLines: 1,
                         style:
-                            const TextStyle(color: Colors.grey, fontSize: 20),
+                        const TextStyle(color: Colors.grey, fontSize: 20),
                       ),
                     ],
                   ),
@@ -170,48 +177,53 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                 ),
                 Column(
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 20, right: 20),
-                    //   child: Row(
-                    //     children: [
-                    //       Text(formatTime(_position.inSeconds),
-                    //         // _position.toString().split('.')[0],
-                    //         style: const TextStyle(
-                    //           color: Colors.white,
-                    //           fontSize: 20,
-                    //         ),
-                    //       ),
-                    //       Expanded(
-                    //         child:
-                    //         Slider(
-                    //           inactiveColor: Colors.white,
-                    //           activeColor: const Color(0xff7b57e4),
-                    //           value: _position.inSeconds.toDouble(),
-                    //           min: _duration.inSeconds.toDouble(),
-                    //           max: 0,
-                    //           onChanged: (value) {
-                    //             setState(
-                    //                   () {
-                    //
-                    //                 final position = Duration(seconds: value.toInt());
-                    //                 player.seek(position);
-                    //                 // changeToSeconds(value.toInt());
-                    //                 // value = value;
-                    //               },
-                    //             );
-                    //           },
-                    //         ),
-                    //       ),
-                    //       Text(formatTime((_duration-_position).inSeconds),
-                    //         // _duration.toString().split('.')[0],
-                    //         style: const TextStyle(
-                    //           color: Colors.white,
-                    //           fontSize: 20,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        children: [
+                          // Text(formatTime(_position.inSeconds),
+                          //   // _position.toString().split('.')[0],
+                          //   style: const TextStyle(
+                          //     color: Colors.white,
+                          //     fontSize: 20,
+                          //   ),
+                          // ),
+                          Expanded(
+                            child:
+
+                      StreamBuilder<Duration>(
+                        stream: _assetsAudioPlayer.currentPosition,
+                        builder: (BuildContext context, AsyncSnapshot <Duration> snapshot) {
+
+                          final Duration? currentDuration = snapshot.data;
+                          final int milliseconds = currentDuration!.inMilliseconds;
+                          final int songDurationInMilliseconds = snapshot.data!.inMilliseconds;
+
+                          return Slider(
+                            min: 0,
+                            max: songDurationInMilliseconds.toDouble(),
+                            value: songDurationInMilliseconds > milliseconds
+                                ? milliseconds.toDouble()
+                                : songDurationInMilliseconds.toDouble(),
+                            onChanged: (double value) {
+                              _assetsAudioPlayer.seek(Duration(milliseconds: value ~/ 1000.0));
+                            },
+                            activeColor: Colors.blue,
+                            inactiveColor: Colors.grey,
+                          );
+                        },
+                      ),
+                          // Text(formatTime((_duration-_position).inSeconds),
+                          //   // _duration.toString().split('.')[0],
+                          //   style: const TextStyle(
+                          //     color: Colors.white,
+                          //     fontSize: 20,
+                          //   ),
+                          // ),
+                          ), ],
+
+                      ),
+                    ),
                     const SizedBox(
                       height: 30,
                     ),

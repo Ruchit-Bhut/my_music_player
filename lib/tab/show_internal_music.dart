@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/play_screen.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
@@ -17,6 +18,8 @@ class ShowInternalMusic extends StatefulWidget {
 }
 
 class _ShowInternalMusicState extends State<ShowInternalMusic> {
+
+  final _audioPlayer = AudioPlayer();
 
   @override
   void initState() {

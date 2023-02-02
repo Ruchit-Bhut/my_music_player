@@ -42,6 +42,7 @@ dependencies:
   shared_preferences: ^2.0.17
   just_audio: ^0.9.31
   text_scroll: ^0.1.2
+  assets_audio_player: ^3.0.6
 
 dev_dependencies:
   flutter_test:
