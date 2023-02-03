@@ -42,8 +42,8 @@ class _FavoriteSongsState extends State<FavoriteSongs> {
                 final data = context.watch<FavSongProvider>().songdata[index];
                 return Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.white10,
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.black26,
                   ),
                   margin: const EdgeInsets.symmetric(
                     horizontal: 10,
