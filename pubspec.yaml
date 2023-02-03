@@ -43,6 +43,7 @@ dependencies:
   just_audio: ^0.9.31
   text_scroll: ^0.1.2
   assets_audio_player: ^3.0.6
+  drop_shadow_image: ^0.9.1
 
 dev_dependencies:
   flutter_test:

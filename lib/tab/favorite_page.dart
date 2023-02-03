@@ -119,7 +119,7 @@ class _FavoriteSongsState extends State<FavoriteSongs> {
             )
           : const Center(
               child: Text(
-                "no like song found",
+                "No Like Songs Found",
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),

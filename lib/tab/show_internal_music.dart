@@ -56,8 +56,8 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
               );
               return Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.black26,
                 ),
                 margin: const EdgeInsets.symmetric(
                   horizontal: 10,

@@ -82,7 +82,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
             width: 20,
           )
         ],
-        backgroundColor: const Color(0xff4c6f8d),
+        backgroundColor: const Color(0xff8a8390),
         elevation: 0,
         leading: InkWell(
           onTap: () {
@@ -109,11 +109,11 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xff4c6f8d),
-                Color(0xff3a5c78),
-                Color(0xff2d4a68),
-                Color(0xff1b3654),
-                Color(0xff0e2746),
+                Color(0xff8a8390),
+                Color(0xff75697b),
+                Color(0xff5c4b63),
+                Color(0xff4b3753),
+                Color(0xff382040),
               ],
             ),
           ),
@@ -150,6 +150,13 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black54,
+                              offset: Offset(8, 8),
+                              blurRadius: 10,
+                            )
+                          ],
                         ),
                       ),
                       Row(
@@ -194,8 +201,17 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                             ? 'Unknown Artist'
                             : widget.musicModel.artistName.toString(),
                         maxLines: 1,
-                        style:
-                            const TextStyle(color: Colors.grey, fontSize: 20),
+                        style: const TextStyle(
+                          color: Colors.white54,
+                          fontSize: 20,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black45,
+                              offset: Offset(5, 5),
+                              blurRadius: 5,
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
