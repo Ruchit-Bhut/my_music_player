@@ -18,7 +18,6 @@ class ShowInternalMusic extends StatefulWidget {
 }
 
 class _ShowInternalMusicState extends State<ShowInternalMusic> {
-
   final _audioPlayer = AudioPlayer();
 
   @override
@@ -38,7 +37,15 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
           );
         }
         if (item.data!.isEmpty) {
-          return const Text('No Song Found');
+          return const Center(
+            child:  Text(
+              'No Song Found',
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.white,
+              ),
+            ),
+          );
         }
         return MediaQuery.removePadding(
           context: context,
@@ -47,10 +54,10 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             itemCount: item.data!.length,
             itemBuilder: (context, index) {
               MusicModel musicModel = MusicModel(
-                  id: item.data![index].id,
-                  songName: item.data![index].displayNameWOExt.toString(),
-                  artistName: item.data![index].artist.toString(),
-                  image: item.data![index].album.toString(),
+                id: item.data![index].id,
+                songName: item.data![index].displayNameWOExt.toString(),
+                artistName: item.data![index].artist.toString(),
+                image: item.data![index].album.toString(),
                 uri: item.data![index].uri.toString(),
                 duration: item.data![index].duration!,
               );
@@ -106,20 +113,14 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                   ),
                   trailing: InkWell(
                     onTap: () {
-                      if (context
-                          .read<FavSongProvider>()
-                          .isFav(musicModel)) {
-                        context
-                            .read<FavSongProvider>()
-                            .remFav(musicModel);
+                      if (context.read<FavSongProvider>().isFav(musicModel)) {
+                        context.read<FavSongProvider>().remFav(musicModel);
                       } else {
-                        context
-                            .read<FavSongProvider>()
-                            .addToFav(musicModel);
+                        context.read<FavSongProvider>().addToFav(musicModel);
                       }
                     },
                     child: context.watch<FavSongProvider>().isFav(
-                      musicModel,
+                              musicModel,
                             )
                         ? const Icon(
                             Icons.favorite,

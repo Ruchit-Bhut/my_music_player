@@ -29,6 +29,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
   Duration _duration = const Duration();
   bool _isPlaying = false;
 
+
   @override
   void initState() {
     super.initState();
@@ -268,7 +269,9 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                         IconButton(
                           iconSize: 45,
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: () async {
+
+                          },
                           icon: const Icon(Icons.skip_previous_rounded),
                         ),
                         const SizedBox(
@@ -288,7 +291,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                             });
                           },
                           icon: Icon(
-                            _isPlaying ? Icons.pause : Icons.play_arrow,
+                            _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
                           ),
                         ),
                         const SizedBox(
@@ -297,7 +300,9 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                         IconButton(
                           iconSize: 45,
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: () async {
+
+                          },
                           icon: const Icon(Icons.skip_next_rounded),
                         ),
                       ],
@@ -312,3 +317,91 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     );
   }
 }
+
+
+
+
+
+
+// next and previous song in app
+
+
+// import 'package:audio_service/audio_service.dart';
+// import 'package:flutter/material.dart';
+//
+// void main() => runApp(MyApp());
+//
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Music Player',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: MainPage(),
+//     );
+//   }
+// }
+//
+// class MainPage extends StatefulWidget {
+//   @override
+//   _MainPageState createState() => _MainPageState();
+// }
+//
+// class _MainPageState extends State<MainPage> {
+//   var _currentIndex = 0;
+//   var _songs = [
+//     'song1.mp3',
+//     'song2.mp3',
+//     'song3.mp3',
+//     'song4.mp3',
+//     'song5.mp3',
+//   ];
+//
+//   void _playNextSong() {
+//     setState(() {
+//       _currentIndex = (_currentIndex + 1) % _songs.length;
+//       AudioService.play(_songs[_currentIndex]);
+//     });
+//   }
+//
+//   void _playPreviousSong() {
+//     setState(() {
+//       _currentIndex = (_currentIndex - 1 + _songs.length) % _songs.length;
+//       AudioService.play(_songs[_currentIndex]);
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             Text("Now playing: ${_songs[_currentIndex]}"),
+//             SizedBox(height: 20),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: <Widget>[
+//                 IconButton(
+//                   icon: Icon(Icons.skip_previous),
+//                   onPressed: _playPreviousSong,
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.play_arrow),
+//                   onPressed: () => AudioService.play(_songs[_currentIndex]),
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.skip_next),
+//                   onPressed: _playNextSong,
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

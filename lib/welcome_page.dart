@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.black54,
                         offset: Offset(8, 8),
                         blurRadius: 10,
-                      )
+                      ),
                     ],
                   ),
                 ),
