@@ -1,10 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
+import 'package:my_music_player/repository/audio_repository.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -29,35 +31,49 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
   Duration _duration = const Duration();
   bool _isPlaying = false;
 
-
   @override
   void initState() {
     super.initState();
     SongDuration();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void SongDuration() {
-    try {
-      widget.audioPlayer.setAudioSource(
-        AudioSource.uri(
-          Uri.parse(widget.musicModel.uri),
-        ),
-      );
-      widget.audioPlayer.play();
-      _isPlaying = true;
-    } on Exception {
-      stdout.write('Error parsing song');
+    if (widget.audioPlayer.audioSource == null) {
+      try {
+        widget.audioPlayer.setAudioSource(ConcatenatingAudioSource(
+            children: AudioRepository.instance.songList
+                .map((e) => AudioSource.uri(
+                      Uri.parse(e.uri!),
+                    ))
+                .toList()));
+      } on Exception {
+        log("Error in loading list");
+      }
     }
+    widget.audioPlayer.seek(Duration.zero,
+        index: AudioRepository.instance.songList
+            .indexWhere((element) => element.id == widget.musicModel.id));
+    widget.audioPlayer.play();
+    setState(() {});
     widget.audioPlayer.durationStream.listen((d) {
-      setState(() {
-        _duration = d!;
-      });
+      if (mounted) {
+        setState(() {
+          _duration = d ?? const Duration(seconds: 0);
+        });
+      }
     });
 
     widget.audioPlayer.positionStream.listen((p) {
-      setState(() {
-        _position = p;
-      });
+      if (mounted) {
+        setState(() {
+          _position = p;
+        });
+      }
     });
   }
 
@@ -269,8 +285,9 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                         IconButton(
                           iconSize: 45,
                           color: Colors.white,
-                          onPressed: () async {
-
+                          onPressed: () {
+                            widget.audioPlayer.seekToPrevious();
+                            setState(() {});
                           },
                           icon: const Icon(Icons.skip_previous_rounded),
                         ),
@@ -291,7 +308,9 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                             });
                           },
                           icon: Icon(
-                            _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                            _isPlaying
+                                ? Icons.pause_rounded
+                                : Icons.play_arrow_rounded,
                           ),
                         ),
                         const SizedBox(
@@ -300,8 +319,9 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                         IconButton(
                           iconSize: 45,
                           color: Colors.white,
-                          onPressed: () async {
-
+                          onPressed: () {
+                            widget.audioPlayer.seekToNext();
+                            setState(() {});
                           },
                           icon: const Icon(Icons.skip_next_rounded),
                         ),

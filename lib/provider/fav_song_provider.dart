@@ -37,9 +37,9 @@ class FavSongProvider with ChangeNotifier {
 
   Future<void> getLocal() async {
     final pref = await SharedPreferences.getInstance();
-    fav = pref.getStringList('favoriteId')!.map(int.parse).toList();
+    fav = pref.getStringList('favoriteId')?.map(int.parse).toList() ?? [];
     final String? getJsonData = pref.getString("favourite");
-    songdata = decode(getJsonData!);
+    songdata = getJsonData == null ? [] : decode(getJsonData);
 
     notifyListeners();
   }
