@@ -1,7 +1,7 @@
+import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class AudioRepository{
-
+class AudioRepository {
   factory AudioRepository() {
     return instance;
   }
@@ -18,15 +18,14 @@ class AudioRepository{
   final _ignoreCase = true;
   final List<SongModel> songList = [];
 
-  Future<List<SongModel>> getAllSongs() async {
-    return _onAudioQuery
+  void getAllSongs() {
+    _onAudioQuery
         .querySongs(
-      sortType: _sortType,
-      orderType: _orderType,
-      uriType: _uriType,
-      ignoreCase: _ignoreCase,
-    );
-
-
+          sortType: _sortType,
+          orderType: _orderType,
+          uriType: _uriType,
+          ignoreCase: _ignoreCase,
+        )
+        .then((value) => songList.addAll(value));
   }
 }

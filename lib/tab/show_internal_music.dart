@@ -23,122 +23,104 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
   @override
   void initState() {
     super.initState();
+    AudioRepository.instance.getAllSongs();
     context.read<FavSongProvider>().getLocal();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: AudioRepository.instance.getAllSongs(),
-      builder: (context, item) {
-        if (item.data == null) {
-          return const Center(
-            child: CircularProgressIndicator(),
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: ListView.builder(
+        itemCount: AudioRepository.instance.songList.length,
+        itemBuilder: (context, index) {
+          final song = AudioRepository.instance.songList[index];
+          MusicModel musicModel = MusicModel(
+            id: song.id,
+            songName: song.displayNameWOExt,
+            artistName: song.artist ?? '<unknown>',
+            image: song.album ?? '',
+            uri: song.uri ?? '',
+            duration: song.duration!,
           );
-        }
-        if (item.data!.isEmpty) {
-          return const Center(
-            child:  Text(
-              'No Song Found',
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.white,
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.black26,
+            ),
+            margin: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 4,
+            ),
+            child: ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                    builder: (context) => PlayMusicScreen(
+                      audioPlayer: _audioPlayer,
+                      musicModel: musicModel,
+                    ),
+                  ),
+                );
+              },
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: QueryArtworkWidget(
+                  id: int.parse(musicModel.id.toString()),
+                  type: ArtworkType.AUDIO,
+                  keepOldArtwork: true,
+                  artworkHeight: 50,
+                  artworkWidth: 50,
+                  nullArtworkWidget: Image.asset(
+                    'assets/icons/music.png',
+                    height: 50,
+                    width: 50,
+                  ),
+                ),
+              ),
+              title: Text(
+                musicModel.songName.toString(),
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
+              ),
+              subtitle: Text(
+                musicModel.artistName,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.white60,
+                ),
+              ),
+              trailing: InkWell(
+                onTap: () {
+                  if (context.read<FavSongProvider>().isFav(musicModel)) {
+                    context.read<FavSongProvider>().remFav(musicModel);
+                  } else {
+                    context.read<FavSongProvider>().addToFav(musicModel);
+                  }
+                },
+                child: context.watch<FavSongProvider>().isFav(
+                          musicModel,
+                        )
+                    ? const Icon(
+                        Icons.favorite,
+                        color: Colors.pink,
+                        size: 30,
+                      )
+                    : const Icon(
+                        Icons.favorite_outline_rounded,
+                        color: Colors.white,
+                        size: 30,
+                      ),
               ),
             ),
           );
-        }
-        return MediaQuery.removePadding(
-          context: context,
-          removeTop: true,
-          child: ListView.builder(
-            itemCount: item.data!.length,
-            itemBuilder: (context, index) {
-              MusicModel musicModel = MusicModel(
-                id: item.data![index].id,
-                songName: item.data![index].displayNameWOExt.toString(),
-                artistName: item.data![index].artist.toString(),
-                image: item.data![index].album.toString(),
-                uri: item.data![index].uri.toString(),
-                duration: item.data![index].duration!,
-              );
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.black26,
-                ),
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (context) => PlayMusicScreen(
-                          audioPlayer: _audioPlayer,
-                          musicModel: musicModel,
-                        ),
-                      ),
-                    );
-                  },
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: QueryArtworkWidget(
-                      id: int.parse(musicModel.id.toString()),
-                      type: ArtworkType.AUDIO,
-                      keepOldArtwork: true,
-                      artworkHeight: 50,
-                      artworkWidth: 50,
-                      nullArtworkWidget: Image.asset(
-                        'assets/icons/music.png',
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    musicModel.songName.toString(),
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  subtitle: Text(
-                    musicModel.artistName,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: Colors.white60,
-                    ),
-                  ),
-                  trailing: InkWell(
-                    onTap: () {
-                      if (context.read<FavSongProvider>().isFav(musicModel)) {
-                        context.read<FavSongProvider>().remFav(musicModel);
-                      } else {
-                        context.read<FavSongProvider>().addToFav(musicModel);
-                      }
-                    },
-                    child: context.watch<FavSongProvider>().isFav(
-                              musicModel,
-                            )
-                        ? const Icon(
-                            Icons.favorite,
-                            color: Colors.pink,
-                            size: 30,
-                          )
-                        : const Icon(
-                            Icons.favorite_outline_rounded,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                  ),
-                ),
-              );
-            },
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 }

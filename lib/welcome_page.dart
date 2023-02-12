@@ -95,8 +95,6 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   child: Container(
-                    height: 50,
-                    width: 130,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       boxShadow: const [
@@ -109,24 +107,28 @@ class _HomePageState extends State<HomePage> {
                       ],
                       color: const Color(0xff6b5c71),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Let's Play",
-                          style: TextStyle(
-                            fontSize: 20,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            "Let's Play",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Icon(
+                            Icons.navigate_next,
                             color: Colors.white,
                           ),
-                        ),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Icon(
-                          Icons.navigate_next,
-                          color: Colors.white,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
