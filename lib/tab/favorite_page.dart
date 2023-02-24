@@ -52,15 +52,7 @@ class _FavoriteSongsState extends State<FavoriteSongs> {
                   child: ListTile(
                     onTap: () {
                       context.read<FavSongProvider>().isFav(data);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (context) => PlayMusicScreen(
-                            audioPlayer: _audioPlayer,
-                            musicModel: data,
-                          ),
-                        ),
-                      );
+                      navToPlayMusic(context, _audioPlayer, index);
                     },
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(10),

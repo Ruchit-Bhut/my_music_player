@@ -1,3 +1,5 @@
+import 'package:on_audio_query/on_audio_query.dart';
+
 class MusicModel {
   MusicModel({
     required this.id,
@@ -32,4 +34,16 @@ class MusicModel {
         'uri': musicModel.uri,
         'duration': musicModel.duration,
       };
+}
+
+MusicModel songToMusic(SongModel song) {
+  print(song.data);
+  return MusicModel(
+    id: song.id,
+    songName: song.displayNameWOExt,
+    artistName: song.artist ?? '<unknown>',
+    image: song.album ?? '',
+    uri: song.uri ?? '',
+    duration: song.duration!,
+  );
 }

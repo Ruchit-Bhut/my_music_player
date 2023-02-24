@@ -1,4 +1,3 @@
-import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class AudioRepository {
@@ -17,6 +16,7 @@ class AudioRepository {
   final _uriType = UriType.EXTERNAL;
   final _ignoreCase = true;
   final List<SongModel> songList = [];
+  int? currentIndex;
 
   void getAllSongs() {
     _onAudioQuery

@@ -56,15 +56,8 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             ),
             child: ListTile(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                    builder: (context) => PlayMusicScreen(
-                      audioPlayer: _audioPlayer,
-                      musicModel: musicModel,
-                    ),
-                  ),
-                );
+                navToPlayMusic(context,_audioPlayer,index);
+
               },
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10),

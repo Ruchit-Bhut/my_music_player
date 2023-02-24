@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:my_music_player/model/song_model.dart';
@@ -12,14 +11,24 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:just_audio/just_audio.dart';
 
+navToPlayMusic(BuildContext context, AudioPlayer audioPlayer, int index) {
+  AudioRepository().currentIndex = index;
+  Navigator.push(
+    context,
+    MaterialPageRoute<dynamic>(
+      builder: (context) => PlayMusicScreen(
+        audioPlayer: audioPlayer,
+      ),
+    ),
+  );
+}
+
 class PlayMusicScreen extends StatefulWidget {
   const PlayMusicScreen({
     super.key,
-    required this.musicModel,
     required this.audioPlayer,
   });
 
-  final MusicModel musicModel;
   final AudioPlayer audioPlayer;
 
   @override
@@ -30,6 +39,8 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
   Duration _position = const Duration();
   Duration _duration = const Duration();
   bool _isPlaying = false;
+  MusicModel musicModel =
+      songToMusic(AudioRepository().songList[AudioRepository().currentIndex!]);
 
   @override
   void initState() {
@@ -57,7 +68,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     }
     widget.audioPlayer.seek(Duration.zero,
         index: AudioRepository.instance.songList
-            .indexWhere((element) => element.id == widget.musicModel.id));
+            .indexWhere((element) => element.id == musicModel.id));
     widget.audioPlayer.play();
     setState(() {});
     widget.audioPlayer.durationStream.listen((d) {
@@ -80,6 +91,28 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
   void changeToSeconds(int seconds) {
     Duration duration = Duration(seconds: seconds);
     widget.audioPlayer.seek(duration);
+  }
+
+  void nextSong() {
+    AudioRepository().currentIndex = AudioRepository().currentIndex! + 1;
+
+    musicModel = songToMusic(
+        AudioRepository().songList[AudioRepository().currentIndex!]);
+
+    setState(() {
+      widget.audioPlayer.seekToNext();
+    });
+  }
+
+  void previousSong() {
+    AudioRepository().currentIndex = AudioRepository().currentIndex! - 1;
+
+    musicModel = songToMusic(
+        AudioRepository().songList[AudioRepository().currentIndex!]);
+
+    setState(() {
+      widget.audioPlayer.seekToPrevious();
+    });
   }
 
   @override
@@ -111,7 +144,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
           ),
         ),
         title: TextScroll(
-          widget.musicModel.songName.toString(),
+          musicModel.songName.toString(),
           velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
           pauseBetween: const Duration(milliseconds: 1000),
           style: const TextStyle(fontSize: 22),
@@ -141,7 +174,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                   height: 50,
                 ),
                 QueryArtworkWidget(
-                  id: int.parse(widget.musicModel.id.toString()),
+                  id: int.parse(musicModel.id.toString()),
                   type: ArtworkType.AUDIO,
                   keepOldArtwork: true,
                   artworkHeight: 350,
@@ -161,7 +194,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.musicModel.songName.toString(),
+                        musicModel.songName.toString(),
                         maxLines: 1,
                         style: const TextStyle(
                           color: Colors.white,
@@ -183,14 +216,14 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                             onTap: () {
                               if (context
                                   .read<FavSongProvider>()
-                                  .isFav(widget.musicModel)) {
+                                  .isFav(musicModel)) {
                                 context
                                     .read<FavSongProvider>()
-                                    .remFav(widget.musicModel);
+                                    .remFav(musicModel);
                               } else {
                                 context
                                     .read<FavSongProvider>()
-                                    .addToFav(widget.musicModel);
+                                    .addToFav(musicModel);
                               }
                             },
                             child: SizedBox(
@@ -198,7 +231,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                               width: 20,
                               child: context
                                       .watch<FavSongProvider>()
-                                      .isFav(widget.musicModel)
+                                      .isFav(musicModel)
                                   ? const Icon(
                                       Icons.favorite,
                                       color: Colors.pink,
@@ -214,9 +247,9 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                         ],
                       ),
                       Text(
-                        widget.musicModel.artistName.toString() == '<unknown>'
+                        musicModel.artistName.toString() == '<unknown>'
                             ? 'Unknown Artist'
-                            : widget.musicModel.artistName.toString(),
+                            : musicModel.artistName.toString(),
                         maxLines: 1,
                         style: const TextStyle(
                           color: Colors.white54,
@@ -285,10 +318,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                         IconButton(
                           iconSize: 45,
                           color: Colors.white,
-                          onPressed: () {
-                            widget.audioPlayer.seekToPrevious();
-                            setState(() {});
-                          },
+                          onPressed:previousSong,
                           icon: const Icon(Icons.skip_previous_rounded),
                         ),
                         const SizedBox(
@@ -299,18 +329,18 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                           color: Colors.white,
                           onPressed: () {
                             setState(() {
+                              _isPlaying = !_isPlaying;
                               if (_isPlaying) {
                                 widget.audioPlayer.pause();
                               } else {
                                 widget.audioPlayer.play();
                               }
-                              _isPlaying = !_isPlaying;
                             });
                           },
                           icon: Icon(
                             _isPlaying
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
+                                ? Icons.play_arrow_rounded
+                                : Icons.pause_rounded,
                           ),
                         ),
                         const SizedBox(
@@ -319,10 +349,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                         IconButton(
                           iconSize: 45,
                           color: Colors.white,
-                          onPressed: () {
-                            widget.audioPlayer.seekToNext();
-                            setState(() {});
-                          },
+                          onPressed: nextSong,
                           icon: const Icon(Icons.skip_next_rounded),
                         ),
                       ],
@@ -338,13 +365,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
   }
 }
 
-
-
-
-
-
 // next and previous song in app
-
 
 // import 'package:audio_service/audio_service.dart';
 // import 'package:flutter/material.dart';
