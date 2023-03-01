@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:my_music_player/model/song_model.dart';
@@ -97,18 +95,18 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                   }
                 },
                 child: context.watch<FavSongProvider>().isFav(
-                          musicModel,
-                        )
+                  musicModel,
+                )
                     ? const Icon(
-                        Icons.favorite,
-                        color: Colors.pink,
-                        size: 30,
-                      )
+                  Icons.favorite,
+                  color: Colors.pink,
+                  size: 30,
+                )
                     : const Icon(
-                        Icons.favorite_outline_rounded,
-                        color: Colors.white,
-                        size: 30,
-                      ),
+                  Icons.favorite_outline_rounded,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
             ),
           );

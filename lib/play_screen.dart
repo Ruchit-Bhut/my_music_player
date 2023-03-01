@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -40,7 +38,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
   Duration _duration = const Duration();
   bool _isPlaying = false;
   MusicModel musicModel =
-      songToMusic(AudioRepository().songList[AudioRepository().currentIndex!]);
+  songToMusic(AudioRepository().songList[AudioRepository().currentIndex!]);
 
   @override
   void initState() {
@@ -59,8 +57,8 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
         widget.audioPlayer.setAudioSource(ConcatenatingAudioSource(
             children: AudioRepository.instance.songList
                 .map((e) => AudioSource.uri(
-                      Uri.parse(e.uri!),
-                    ))
+              Uri.parse(e.uri!),
+            ))
                 .toList()));
       } on Exception {
         log("Error in loading list");
@@ -230,18 +228,18 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                               height: 20,
                               width: 20,
                               child: context
-                                      .watch<FavSongProvider>()
-                                      .isFav(musicModel)
+                                  .watch<FavSongProvider>()
+                                  .isFav(musicModel)
                                   ? const Icon(
-                                      Icons.favorite,
-                                      color: Colors.pink,
-                                      size: 30,
-                                    )
+                                Icons.favorite,
+                                color: Colors.pink,
+                                size: 30,
+                              )
                                   : const Icon(
-                                      Icons.favorite_outline_rounded,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
+                                Icons.favorite_outline_rounded,
+                                color: Colors.white,
+                                size: 30,
+                              ),
                             ),
                           )
                         ],
@@ -364,85 +362,3 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     );
   }
 }
-
-// next and previous song in app
-
-// import 'package:audio_service/audio_service.dart';
-// import 'package:flutter/material.dart';
-//
-// void main() => runApp(MyApp());
-//
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Music Player',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: MainPage(),
-//     );
-//   }
-// }
-//
-// class MainPage extends StatefulWidget {
-//   @override
-//   _MainPageState createState() => _MainPageState();
-// }
-//
-// class _MainPageState extends State<MainPage> {
-//   var _currentIndex = 0;
-//   var _songs = [
-//     'song1.mp3',
-//     'song2.mp3',
-//     'song3.mp3',
-//     'song4.mp3',
-//     'song5.mp3',
-//   ];
-//
-//   void _playNextSong() {
-//     setState(() {
-//       _currentIndex = (_currentIndex + 1) % _songs.length;
-//       AudioService.play(_songs[_currentIndex]);
-//     });
-//   }
-//
-//   void _playPreviousSong() {
-//     setState(() {
-//       _currentIndex = (_currentIndex - 1 + _songs.length) % _songs.length;
-//       AudioService.play(_songs[_currentIndex]);
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text("Now playing: ${_songs[_currentIndex]}"),
-//             SizedBox(height: 20),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: <Widget>[
-//                 IconButton(
-//                   icon: Icon(Icons.skip_previous),
-//                   onPressed: _playPreviousSong,
-//                 ),
-//                 IconButton(
-//                   icon: Icon(Icons.play_arrow),
-//                   onPressed: () => AudioService.play(_songs[_currentIndex]),
-//                 ),
-//                 IconButton(
-//                   icon: Icon(Icons.skip_next),
-//                   onPressed: _playNextSong,
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

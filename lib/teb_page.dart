@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:my_music_player/bottom_play_screen.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
 import 'package:my_music_player/tab/favorite_page.dart';
@@ -15,15 +16,19 @@ class ShowTab extends StatefulWidget {
   State<ShowTab> createState() => _ShowTabState();
 }
 
-class _ShowTabState extends State<ShowTab> {
+class _ShowTabState extends State<ShowTab> with TickerProviderStateMixin {
+  TabController? tabController;
 
   @override
   void initState() {
     super.initState();
+    tabController = TabController(length: 3, vsync: this);
     requestPermission();
-    _searchingController.addListener(() {
-      filterSongs();
-    });
+    if (tabController!.index == 0) {
+      searchingController.addListener(() {
+        filterSongs();
+      });
+    }
   }
 
   @override
@@ -32,14 +37,14 @@ class _ShowTabState extends State<ShowTab> {
   }
 
   List<MusicModel> songFiltered = [];
-  final TextEditingController _searchingController = TextEditingController();
+  final TextEditingController searchingController = TextEditingController();
 
   filterSongs() {
     List<MusicModel> music = [];
     music.addAll(context.read<FavSongProvider>().songdata);
-    if(_searchingController.text.isNotEmpty){
-      music.retainWhere((context){
-        String searchTerm = _searchingController.text.toLowerCase();
+    if (searchingController.text.isNotEmpty) {
+      music.retainWhere((context) {
+        String searchTerm = searchingController.text.toLowerCase();
         String musicName = context.songName.toLowerCase();
         return musicName.contains(searchTerm);
       });
@@ -108,7 +113,7 @@ class _ShowTabState extends State<ShowTab> {
                     ),
                     suffixIcon: IconButton(
                       onPressed: () {
-                        setState(_searchingController.clear);
+                        setState(searchingController.clear);
                       },
                       icon: const Icon(
                         Icons.close,
@@ -119,10 +124,11 @@ class _ShowTabState extends State<ShowTab> {
                   ),
                 ),
               ),
-              const TabBar(
+              TabBar(
+                controller: tabController,
                 indicatorWeight: 4,
-                indicatorColor: Color(0xff0e2746),
-                tabs: [
+                indicatorColor: const Color(0xff0e2746),
+                tabs: const [
                   Tab(
                     child: Image(
                       image: AssetImage(
@@ -151,9 +157,9 @@ class _ShowTabState extends State<ShowTab> {
               ),
               Expanded(
                 child: TabBarView(
+                  controller: tabController,
                   children: [
-                    ShowInternalMusic(
-                        searchingController: _searchingController),
+                    ShowInternalMusic(searchingController: searchingController),
                     const FavoriteSongs(),
                     const OnlineSongs(),
                   ],
@@ -161,6 +167,11 @@ class _ShowTabState extends State<ShowTab> {
               ),
             ],
           ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: const Padding(
+          padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
+          child: BottomPlay(),
         ),
       ),
     );
