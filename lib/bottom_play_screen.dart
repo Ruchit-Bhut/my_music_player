@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_music_player/provider/bottom_play_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class BottomPlay extends StatefulWidget {
   const BottomPlay({Key? key}) : super(key: key);
@@ -8,7 +11,6 @@ class BottomPlay extends StatefulWidget {
 }
 
 class _BottomPlayState extends State<BottomPlay> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +24,21 @@ class _BottomPlayState extends State<BottomPlay> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-            child: Container(
+            child:
+                //  QueryArtworkWidget(
+                //   id: int.parse(musicModel.id.toString()),
+                //   type: ArtworkType.AUDIO,
+                //   keepOldArtwork: true,
+                //   artworkHeight: 70,
+                //   artworkWidth: 70,
+                //   nullArtworkWidget: Image.asset(
+                //     'assets/icons/music.png',
+                //     height: 70,
+                //     width: 70,
+                //   ),
+                // ),
+
+                Container(
               height: 70,
               width: 70,
               decoration: BoxDecoration(
@@ -31,32 +47,58 @@ class _BottomPlayState extends State<BottomPlay> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 12, 0, 0),
+          SizedBox(
+            height: 30,
+            width: 150,
             child: Column(
               children: [
+                if (context.read<PlayProvider>().songLists.isNotEmpty)
+                  TextScroll(
+                    context.read<PlayProvider>().songLists.first.songName,
+                    velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
+                    pauseBetween: const Duration(milliseconds: 1000),
+                    style: const TextStyle(fontSize: 22),
+                  ),
+                // Text(
+                //   context.read<PlayProvider>().songLists.first.songName,
+                //   style: TextStyle(
+                //       color: Colors.white.withOpacity(0.70), fontSize: 20),
+                // ),
                 Text(
-                  'Song Name',
-                  style: TextStyle(
-                      color: Colors.white.withOpacity(0.70), fontSize: 30),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'Artist Name',
+                  'Artist name',
                   style: TextStyle(
                       color: Colors.white.withOpacity(0.40), fontSize: 20),
                 ),
               ],
             ),
           ),
-          const SizedBox(
-            width: 5,
+          // const SizedBox(
+          //   width: 5,
+          // ),
+          InkWell(
+            onTap: () {},
+            child: const Icon(
+              Icons.skip_previous_outlined,
+              color: Colors.white,
+              size: 45,
+            ),
           ),
-          const Icon(Icons.skip_previous_outlined,color: Colors.white,size: 50,),
-          const Icon(Icons.play_circle_outline_rounded,color: Colors.white,size: 70,),
-          const Icon(Icons.skip_next_outlined,color: Colors.white,size: 50,),
+          InkWell(
+            onTap: () {},
+            child: const Icon(
+              Icons.play_circle_outline_rounded,
+              color: Colors.white,
+              size: 70,
+            ),
+          ),
+          InkWell(
+            onTap: () {},
+            child: const Icon(
+              Icons.skip_next_outlined,
+              color: Colors.white,
+              size: 45,
+            ),
+          ),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_music_player/provider/bottom_play_provider.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
 import 'package:my_music_player/welcome_page.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (context) => FavSongProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PlayProvider(),
         ),
       ],
       child: const MyApp(),

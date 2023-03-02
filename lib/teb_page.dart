@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:my_music_player/bottom_play_screen.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';

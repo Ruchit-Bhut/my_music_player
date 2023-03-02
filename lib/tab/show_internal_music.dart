@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/play_screen.dart';
+import 'package:my_music_player/provider/bottom_play_provider.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
 import 'package:my_music_player/repository/audio_repository.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -43,6 +44,7 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             uri: song.uri ?? '',
             duration: song.duration!,
           );
+
           return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -54,8 +56,8 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             ),
             child: ListTile(
               onTap: () {
-                navToPlayMusic(context,_audioPlayer,index);
-
+                navToPlayMusic(context, _audioPlayer, index);
+                context.read<PlayProvider>().passSongData(musicModel);
               },
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
@@ -95,18 +97,18 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                   }
                 },
                 child: context.watch<FavSongProvider>().isFav(
-                  musicModel,
-                )
+                          musicModel,
+                        )
                     ? const Icon(
-                  Icons.favorite,
-                  color: Colors.pink,
-                  size: 30,
-                )
+                        Icons.favorite,
+                        color: Colors.pink,
+                        size: 30,
+                      )
                     : const Icon(
-                  Icons.favorite_outline_rounded,
-                  color: Colors.white,
-                  size: 30,
-                ),
+                        Icons.favorite_outline_rounded,
+                        color: Colors.white,
+                        size: 30,
+                      ),
               ),
             ),
           );
