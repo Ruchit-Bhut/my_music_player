@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:my_music_player/bottom_play_screen.dart';
 import 'package:my_music_player/model/song_model.dart';
+import 'package:my_music_player/provider/bottom_play_provider.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
 import 'package:my_music_player/tab/favorite_page.dart';
 import 'package:my_music_player/tab/online_songs.dart';
@@ -22,7 +22,12 @@ class _ShowTabState extends State<ShowTab> with TickerProviderStateMixin {
 
   @override
   void initState() {
+
     super.initState();
+
+    setState(() {
+      const BottomPlay();
+    });
     tabController = TabController(length: 3, vsync: this);
     requestPermission();
     if (tabController!.index == 0) {
@@ -170,9 +175,9 @@ class _ShowTabState extends State<ShowTab> with TickerProviderStateMixin {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: const Padding(
-          padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
-          child: BottomPlay(),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+          child: context.watch<PlayProvider>().bottomPlay.isNotEmpty ?  const BottomPlay() : const SizedBox(),
         ),
       ),
     );

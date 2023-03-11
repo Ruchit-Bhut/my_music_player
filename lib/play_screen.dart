@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:my_music_player/model/song_model.dart';
+import 'package:my_music_player/provider/bottom_play_provider.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
 import 'package:my_music_player/repository/audio_repository.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -66,6 +67,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
         log("Error in loading list");
       }
     }
+    context.read<PlayProvider>().musicModel = musicModel;
     widget.audioPlayer.seek(Duration.zero,
         index: AudioRepository.instance.songList
             .indexWhere((element) => element.id == musicModel.id));
@@ -136,10 +138,11 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
         elevation: 0,
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+
+            Navigator.pop(context);
           },
           child: const Icon(
-            Icons.chevron_left,
+              Icons.chevron_left,
             size: 35,
           ),
         ),

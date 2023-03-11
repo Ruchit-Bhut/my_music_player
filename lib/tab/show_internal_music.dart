@@ -44,7 +44,6 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             uri: song.uri ?? '',
             duration: song.duration!,
           );
-
           return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -56,8 +55,11 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             ),
             child: ListTile(
               onTap: () {
-                navToPlayMusic(context, _audioPlayer, index);
-                context.read<PlayProvider>().passSongData(musicModel);
+                setState(() {
+                  navToPlayMusic(context, _audioPlayer, index);
+                });
+
+                context.read<PlayProvider>().bottomBar(musicModel);
               },
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10),

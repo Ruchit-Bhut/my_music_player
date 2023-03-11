@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:on_audio_query/on_audio_query.dart';
 
 class MusicModel {
@@ -37,7 +39,7 @@ class MusicModel {
 }
 
 MusicModel songToMusic(SongModel song) {
-  print(song.data);
+  log(song.data);
   return MusicModel(
     id: song.id,
     songName: song.displayNameWOExt,
