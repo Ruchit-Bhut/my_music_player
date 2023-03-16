@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_music_player/provider/bottom_play_provider.dart';
-import 'package:my_music_player/repository/audio_repository.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 class BottomPlay extends StatefulWidget {
-  const BottomPlay({Key? key, }) : super(key: key);
+  const BottomPlay({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<BottomPlay> createState() => _BottomPlayState();
@@ -17,32 +18,29 @@ class _BottomPlayState extends State<BottomPlay> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-      });
+      setState(() {});
     });
   }
 
+  // void nextSong() {
+  //   AudioRepository().currentIndex = AudioRepository().currentIndex! + 1;
 
+  //   context.watch<PlayProvider>().musicModel;
 
-  void nextSong() {
-    AudioRepository().currentIndex = AudioRepository().currentIndex! + 1;
+  //   setState(() {
+  //     context.read<PlayProvider>().audioPlayer.seekToNext();
+  //   });
+  // }
 
-     context.watch<PlayProvider>().musicModel;
+  // void previousSong() {
+  //   AudioRepository().currentIndex = AudioRepository().currentIndex! - 1;
 
-    setState(() {
-      context.read<PlayProvider>().audioPlayer.seekToNext();
-    });
-  }
+  //   context.watch<PlayProvider>().musicModel;
 
-  void previousSong() {
-    AudioRepository().currentIndex = AudioRepository().currentIndex! - 1;
-
-    context.watch<PlayProvider>().musicModel;
-
-    setState(() {
-      context.read<PlayProvider>().audioPlayer.seekToPrevious();
-    });
-  }
+  //   setState(() {
+  //     context.read<PlayProvider>().audioPlayer.seekToPrevious();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +93,7 @@ class _BottomPlayState extends State<BottomPlay> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: context.read<PlayProvider>().previousSong,
             child: const Icon(
               Icons.skip_previous_outlined,
               color: Colors.white,
@@ -111,7 +109,9 @@ class _BottomPlayState extends State<BottomPlay> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              context.read<PlayProvider>().nextSong;
+            },
             child: const Icon(
               Icons.skip_next_outlined,
               color: Colors.white,
@@ -123,3 +123,14 @@ class _BottomPlayState extends State<BottomPlay> {
     );
   }
 }
+
+
+
+//  Stack(
+//             children: [
+//               IconButton(
+//                 onPressed: () {},
+//                 icon: const Icon(Icons.clear),
+//               ),
+//             ],
+//           )

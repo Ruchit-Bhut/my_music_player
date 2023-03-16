@@ -41,7 +41,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
   Duration _duration = const Duration();
   bool _isPlaying = false;
   MusicModel musicModel =
-  songToMusic(AudioRepository().songList[AudioRepository().currentIndex!]);
+      songToMusic(AudioRepository().songList[AudioRepository().currentIndex!]);
 
   @override
   void initState() {
@@ -60,8 +60,8 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
         widget.audioPlayer.setAudioSource(ConcatenatingAudioSource(
             children: AudioRepository.instance.songList
                 .map((e) => AudioSource.uri(
-              Uri.parse(e.uri!),
-            ))
+                      Uri.parse(e.uri!),
+                    ))
                 .toList()));
       } on Exception {
         log("Error in loading list");
@@ -138,11 +138,10 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
         elevation: 0,
         leading: InkWell(
           onTap: () {
-
             Navigator.pop(context);
           },
           child: const Icon(
-              Icons.chevron_left,
+            Icons.chevron_left,
             size: 35,
           ),
         ),
@@ -233,18 +232,18 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                               height: 20,
                               width: 20,
                               child: context
-                                  .watch<FavSongProvider>()
-                                  .isFav(musicModel)
+                                      .watch<FavSongProvider>()
+                                      .isFav(musicModel)
                                   ? const Icon(
-                                Icons.favorite,
-                                color: Colors.pink,
-                                size: 30,
-                              )
+                                      Icons.favorite,
+                                      color: Colors.pink,
+                                      size: 30,
+                                    )
                                   : const Icon(
-                                Icons.favorite_outline_rounded,
-                                color: Colors.white,
-                                size: 30,
-                              ),
+                                      Icons.favorite_outline_rounded,
+                                      color: Colors.white,
+                                      size: 30,
+                                    ),
                             ),
                           )
                         ],
@@ -321,7 +320,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                         IconButton(
                           iconSize: 45,
                           color: Colors.white,
-                          onPressed:previousSong,
+                          onPressed: previousSong,
                           icon: const Icon(Icons.skip_previous_rounded),
                         ),
                         const SizedBox(

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/play_screen.dart';
 import 'package:my_music_player/provider/bottom_play_provider.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
-import 'package:my_music_player/repository/audio_repository.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
@@ -17,26 +15,26 @@ class ShowInternalMusic extends StatefulWidget {
 }
 
 class _ShowInternalMusicState extends State<ShowInternalMusic> {
-  final _audioPlayer = AudioPlayer();
-
   @override
   void initState() {
     super.initState();
-    AudioRepository.instance.getAllSongs();
+    context.read<PlayProvider>().audioRepo.getAllSongs();
     context.read<FavSongProvider>().getLocal();
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final audioPlayer = context.watch<PlayProvider>().audioPlayer;
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
       child: ListView.builder(
-        itemCount: AudioRepository.instance.songList.length,
+        itemCount: context.read<PlayProvider>().audioRepo.songList.length,
         itemBuilder: (context, index) {
-          final song = AudioRepository.instance.songList[index];
-          MusicModel musicModel = MusicModel(
+          final song = context.read<PlayProvider>().audioRepo.songList[index];
+
+          context.read<PlayProvider>().musicModel = MusicModel(
             id: song.id,
             songName: song.displayNameWOExt,
             artistName: song.artist ?? '<unknown>',
@@ -44,6 +42,8 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             uri: song.uri ?? '',
             duration: song.duration!,
           );
+
+          final musicModel = context.read<PlayProvider>().musicModel;
           return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -56,7 +56,7 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             child: ListTile(
               onTap: () {
                 setState(() {
-                  navToPlayMusic(context, _audioPlayer, index);
+                  navToPlayMusic(context, audioPlayer, index);
                 });
 
                 context.read<PlayProvider>().bottomBar(musicModel);
