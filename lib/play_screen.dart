@@ -67,7 +67,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
         log("Error in loading list");
       }
     }
-    context.read<PlayProvider>().musicModel = musicModel;
+    context.read<BottomPlayProvider>().musicModel = musicModel;
     widget.audioPlayer.seek(Duration.zero,
         index: AudioRepository.instance.songList
             .indexWhere((element) => element.id == musicModel.id));
@@ -103,6 +103,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
 
     setState(() {
       widget.audioPlayer.seekToNext();
+      context.read<BottomPlayProvider>().bottomBar(musicModel);
     });
   }
 
@@ -114,6 +115,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
 
     setState(() {
       widget.audioPlayer.seekToPrevious();
+      context.read<BottomPlayProvider>().bottomBar(musicModel);
     });
   }
 

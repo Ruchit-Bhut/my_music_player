@@ -18,23 +18,24 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
   @override
   void initState() {
     super.initState();
-    context.read<PlayProvider>().audioRepo.getAllSongs();
+    context.read<BottomPlayProvider>().audioRepo.getAllSongs();
     context.read<FavSongProvider>().getLocal();
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final audioPlayer = context.watch<PlayProvider>().audioPlayer;
+    final audioPlayer = context.watch<BottomPlayProvider>().audioPlayer;
     return MediaQuery.removePadding(
       context: context,
+
       removeTop: true,
       child: ListView.builder(
-        itemCount: context.read<PlayProvider>().audioRepo.songList.length,
+        itemCount: context.read<BottomPlayProvider>().audioRepo.songList.length,
         itemBuilder: (context, index) {
-          final song = context.read<PlayProvider>().audioRepo.songList[index];
+          final song = context.read<BottomPlayProvider>().audioRepo.songList[index];
 
-          context.read<PlayProvider>().musicModel = MusicModel(
+          context.read<BottomPlayProvider>().musicModel = MusicModel(
             id: song.id,
             songName: song.displayNameWOExt,
             artistName: song.artist ?? '<unknown>',
@@ -43,7 +44,8 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             duration: song.duration!,
           );
 
-          final musicModel = context.read<PlayProvider>().musicModel;
+          final musicModel = context.read<BottomPlayProvider>().musicModel;
+          context.read<BottomPlayProvider>().songLists.add(musicModel);
           return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -59,7 +61,7 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                   navToPlayMusic(context, audioPlayer, index);
                 });
 
-                context.read<PlayProvider>().bottomBar(musicModel);
+                context.read<BottomPlayProvider>().bottomBar(musicModel);
               },
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10),

@@ -10,19 +10,18 @@ import 'package:my_music_player/tab/show_internal_music.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
-class ShowTab extends StatefulWidget {
-  const ShowTab({super.key});
+class TabPage extends StatefulWidget {
+  const TabPage({super.key});
 
   @override
-  State<ShowTab> createState() => _ShowTabState();
+  State<TabPage> createState() => _TabPageState();
 }
 
-class _ShowTabState extends State<ShowTab> with TickerProviderStateMixin {
+class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
   TabController? tabController;
 
   @override
   void initState() {
-
     super.initState();
 
     setState(() {
@@ -177,7 +176,9 @@ class _ShowTabState extends State<ShowTab> with TickerProviderStateMixin {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(
           padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-          child: context.watch<PlayProvider>().bottomPlay.isNotEmpty ?  const BottomPlay() : const SizedBox(),
+          child: context.watch<BottomPlayProvider>().bottomPlay.isNotEmpty
+              ? const BottomPlay()
+              : const SizedBox(),
         ),
       ),
     );

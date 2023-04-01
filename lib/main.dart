@@ -19,7 +19,7 @@ void main() async {
           create: (context) => FavSongProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => PlayProvider(),
+          create: (context) => BottomPlayProvider(),
         ),
       ],
       child: const MyApp(),

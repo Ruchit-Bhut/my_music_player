@@ -42,6 +42,7 @@ class _BottomPlayState extends State<BottomPlay> {
   //   });
   // }
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,11 +54,11 @@ class _BottomPlayState extends State<BottomPlay> {
       ),
       child: Row(
         children: [
-          if (context.read<PlayProvider>().bottomPlay.isNotEmpty)
+          if (context.read<BottomPlayProvider>().bottomPlay.isNotEmpty)
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
               child: QueryArtworkWidget(
-                id: context.watch<PlayProvider>().bottomPlay.first.id,
+                id: context.watch<BottomPlayProvider>().bottomPlay.first.id,
                 type: ArtworkType.AUDIO,
                 keepOldArtwork: true,
                 artworkHeight: 70,
@@ -75,16 +76,16 @@ class _BottomPlayState extends State<BottomPlay> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (context.read<PlayProvider>().bottomPlay.isNotEmpty)
+                if (context.watch<BottomPlayProvider>().musicModel.toString().isNotEmpty)
                   TextScroll(
-                    context.watch<PlayProvider>().bottomPlay.first.songName,
+                    "${context.watch<BottomPlayProvider>().audioRepo.songList.where((element) => context.watch<BottomPlayProvider>().bottomPlay.first.id == element.id).map((e) => e.displayName.toString())}",
                     velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
                     pauseBetween: const Duration(milliseconds: 1000),
                     style: const TextStyle(fontSize: 25, color: Colors.white),
                   ),
-                if (context.read<PlayProvider>().bottomPlay.isNotEmpty)
+                if (context.read<BottomPlayProvider>().bottomPlay.isNotEmpty)
                   Text(
-                    context.watch<PlayProvider>().bottomPlay.first.artistName,
+                    context.watch<BottomPlayProvider>().bottomPlay.first.artistName,
                     maxLines: 1,
                     style: TextStyle(
                         color: Colors.white.withOpacity(0.60), fontSize: 16),
@@ -93,7 +94,9 @@ class _BottomPlayState extends State<BottomPlay> {
             ),
           ),
           InkWell(
-            onTap: context.read<PlayProvider>().previousSong,
+            onTap: (){
+              context.read<BottomPlayProvider>().previousSong();
+            },
             child: const Icon(
               Icons.skip_previous_outlined,
               color: Colors.white,
@@ -110,7 +113,7 @@ class _BottomPlayState extends State<BottomPlay> {
           ),
           InkWell(
             onTap: () {
-              context.read<PlayProvider>().nextSong;
+              context.read<BottomPlayProvider>().nextSong();
             },
             child: const Icon(
               Icons.skip_next_outlined,
