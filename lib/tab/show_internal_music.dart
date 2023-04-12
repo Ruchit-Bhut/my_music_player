@@ -59,6 +59,8 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
               onTap: () {
                 setState(() {
                   navToPlayMusic(context, audioPlayer, index);
+                  context.read<BottomPlayProvider>().isTrue(true);
+
                 });
 
                 context.read<BottomPlayProvider>().bottomBar(musicModel);

@@ -176,7 +176,7 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(
           padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-          child: context.watch<BottomPlayProvider>().bottomPlay.isNotEmpty
+          child: context.watch<BottomPlayProvider>().isCheckPlay == true
               ? const BottomPlay()
               : const SizedBox(),
         ),

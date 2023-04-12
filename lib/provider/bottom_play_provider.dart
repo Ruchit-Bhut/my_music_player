@@ -9,18 +9,15 @@ class BottomPlayProvider with ChangeNotifier {
   final audioPlayer = AudioPlayer();
   late MusicModel musicModel;
 
-
   void nextSong() {
     AudioRepository().currentIndex = AudioRepository().currentIndex! + 1;
 
     musicModel = songToMusic(
         AudioRepository().songList[AudioRepository().currentIndex!]);
 
-
-     audioPlayer.seekToNext();
-      bottomBar(musicModel);
-      notifyListeners();
-
+    audioPlayer.seekToNext();
+    bottomBar(musicModel);
+    notifyListeners();
   }
 
   void previousSong() {
@@ -29,10 +26,9 @@ class BottomPlayProvider with ChangeNotifier {
     musicModel = songToMusic(
         AudioRepository().songList[AudioRepository().currentIndex!]);
 
-
-      audioPlayer.seekToPrevious();
-      bottomBar(musicModel);
-notifyListeners();
+    audioPlayer.seekToPrevious();
+    bottomBar(musicModel);
+    notifyListeners();
   }
 
   List<MusicModel> songLists = [];
@@ -50,13 +46,17 @@ notifyListeners();
   }
 
 
+  bool isCheckPlay = false;
 
-  // void nextSong(MusicModel musicModel) {
-  //   bottomPlay.first.id = bottomPlay.first.id + 1;
-  //   notifyListeners();
-  // }
+  void isTrue(bool value){
+     isCheckPlay = value;
+     notifyListeners();
+  }
 
-  // void previousSong() {
-  //   AudioRepository().currentIndex = AudioRepository().currentIndex! - 1;
-  // }
+  bool isPlaying = false;
+
+  void boothPlay(){
+
+  }
+
 }
