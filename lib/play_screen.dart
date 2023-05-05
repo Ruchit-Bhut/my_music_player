@@ -39,7 +39,8 @@ class PlayMusicScreen extends StatefulWidget {
 class _PlayMusicScreenState extends State<PlayMusicScreen> {
   Duration _position = const Duration();
   Duration _duration = const Duration();
-  bool _isPlaying = false;
+
+  // bool _isPlaying = false;
   MusicModel musicModel =
       songToMusic(AudioRepository().songList[AudioRepository().currentIndex!]);
 
@@ -59,10 +60,16 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
       try {
         widget.audioPlayer.setAudioSource(ConcatenatingAudioSource(
             children: AudioRepository.instance.songList
-                .map((e) => AudioSource.uri(
-                      Uri.parse(e.uri!),
-                    ))
+                .map((e)
+            {
+              log("/////////////////////////////${e.uri}////////////////////////////");
+                     return AudioSource.uri(
+                        Uri.parse(e.uri!),
+                      );
+                    })
                 .toList()));
+
+
       } on Exception {
         log("Error in loading list");
       }
@@ -72,6 +79,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
         index: AudioRepository.instance.songList
             .indexWhere((element) => element.id == musicModel.id));
     widget.audioPlayer.play();
+    context.read<BottomPlayProvider>().isPlaying = false;
     setState(() {});
     widget.audioPlayer.durationStream.listen((d) {
       if (mounted) {
@@ -328,24 +336,26 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                         const SizedBox(
                           width: 20,
                         ),
-                        IconButton(
-                          iconSize: 70,
-                          color: Colors.white,
-                          onPressed: () {
-                            setState(() {
-                              _isPlaying = !_isPlaying;
-                              if (_isPlaying) {
-                                widget.audioPlayer.pause();
-                              } else {
-                                widget.audioPlayer.play();
-                              }
-                            });
+                        Consumer<BottomPlayProvider>(
+                          builder: (context, playProvider, child) {
+                            return IconButton(
+                              iconSize: 70,
+                              color: Colors.white,
+                              onPressed: () {
+                                playProvider.isPlayOnChanged();
+                                if (playProvider.isPlaying) {
+                                  widget.audioPlayer.pause();
+                                } else {
+                                  widget.audioPlayer.play();
+                                }
+                              },
+                              icon: Icon(
+                                playProvider.isPlaying
+                                    ? Icons.play_arrow_rounded
+                                    : Icons.pause_rounded,
+                              ),
+                            );
                           },
-                          icon: Icon(
-                            _isPlaying
-                                ? Icons.play_arrow_rounded
-                                : Icons.pause_rounded,
-                          ),
                         ),
                         const SizedBox(
                           width: 20,

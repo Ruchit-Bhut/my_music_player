@@ -28,12 +28,12 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
     final audioPlayer = context.watch<BottomPlayProvider>().audioPlayer;
     return MediaQuery.removePadding(
       context: context,
-
       removeTop: true,
       child: ListView.builder(
         itemCount: context.read<BottomPlayProvider>().audioRepo.songList.length,
         itemBuilder: (context, index) {
-          final song = context.read<BottomPlayProvider>().audioRepo.songList[index];
+          final song =
+              context.read<BottomPlayProvider>().audioRepo.songList[index];
 
           context.read<BottomPlayProvider>().musicModel = MusicModel(
             id: song.id,
@@ -60,7 +60,6 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                 setState(() {
                   navToPlayMusic(context, audioPlayer, index);
                   context.read<BottomPlayProvider>().isTrue(true);
-
                 });
 
                 context.read<BottomPlayProvider>().bottomBar(musicModel);

@@ -1,6 +1,7 @@
 import 'package:drop_shadow_image/drop_shadow_image.dart';
 import 'package:flutter/material.dart';
 import 'package:my_music_player/teb_page.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,6 +11,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+ Future<bool> checkAndRequestPermissions({bool retry = false}) async {
+    final hasPermission = await OnAudioQuery().checkAndRequest(
+      retryRequest: retry,
+    );
+    return hasPermission;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,13 +95,15 @@ class _HomePageState extends State<HomePage> {
                   height: 40,
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TabPage(),
-                      ),
-                    );
+                  onTap: () async{
+                    if(await checkAndRequestPermissions()){
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TabPage(),
+                        ),
+                      );
+                    }
                   },
                   child: Container(
                     decoration: BoxDecoration(

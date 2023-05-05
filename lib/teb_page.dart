@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_music_player/bottom_play_screen.dart';
 import 'package:my_music_player/model/song_model.dart';
@@ -7,7 +6,6 @@ import 'package:my_music_player/provider/fav_song_provider.dart';
 import 'package:my_music_player/tab/favorite_page.dart';
 import 'package:my_music_player/tab/online_songs.dart';
 import 'package:my_music_player/tab/show_internal_music.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
 class TabPage extends StatefulWidget {
@@ -28,17 +26,11 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
       const BottomPlay();
     });
     tabController = TabController(length: 3, vsync: this);
-    requestPermission();
     if (tabController!.index == 0) {
       searchingController.addListener(() {
         filterSongs();
       });
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   List<MusicModel> songFiltered = [];
@@ -59,17 +51,6 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
     }
   }
 
-  final OnAudioQuery audioQuery = OnAudioQuery();
-
-  Future<void> requestPermission() async {
-    if (!kIsWeb) {
-      final permissionStatus = await audioQuery.permissionsStatus();
-      if (!permissionStatus) {
-        await audioQuery.permissionsRequest();
-      }
-      setState(() {});
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -9,6 +9,18 @@ class BottomPlayProvider with ChangeNotifier {
   final audioPlayer = AudioPlayer();
   late MusicModel musicModel;
 
+
+
+  void play() async {
+    await audioPlayer.play();
+    notifyListeners();
+  }
+
+  void pause() {
+    audioPlayer.pause();
+    notifyListeners();
+  }
+
   void nextSong() {
     AudioRepository().currentIndex = AudioRepository().currentIndex! + 1;
 
@@ -32,6 +44,7 @@ class BottomPlayProvider with ChangeNotifier {
   }
 
   List<MusicModel> songLists = [];
+
   passSongData(MusicModel musicModels) {
     songLists.add(musicModels);
     notifyListeners();
@@ -45,18 +58,17 @@ class BottomPlayProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
   bool isCheckPlay = false;
 
-  void isTrue(bool value){
-     isCheckPlay = value;
-     notifyListeners();
+  void isTrue(bool value) {
+    isCheckPlay = value;
+    notifyListeners();
   }
 
   bool isPlaying = false;
 
-  void boothPlay(){
-
+  void isPlayOnChanged() {
+    isPlaying = !isPlaying;
+    notifyListeners();
   }
-
 }

@@ -15,7 +15,7 @@ class BottomPlay extends StatefulWidget {
 }
 
 class _BottomPlayState extends State<BottomPlay> {
-  bool _isPlayingBottom = false;
+  // bool _isPlayingBottom = false;
 
   @override
   void initState() {
@@ -28,7 +28,9 @@ class _BottomPlayState extends State<BottomPlay> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){},
+      onTap: (){
+
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -119,8 +121,8 @@ class _BottomPlayState extends State<BottomPlay> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      _isPlayingBottom = !_isPlayingBottom;
-                      if (_isPlayingBottom) {
+                     context.read<BottomPlayProvider>().isPlayOnChanged();
+                      if (context.read<BottomPlayProvider>().isPlaying) {
                         context.read<BottomPlayProvider>().audioPlayer.pause();
                       } else {
                         context.read<BottomPlayProvider>().audioPlayer.play();
@@ -128,8 +130,8 @@ class _BottomPlayState extends State<BottomPlay> {
                     });
                   },
                   child: Icon(
-                    _isPlayingBottom
-                        ? Icons.play_circle_outline_rounded
+                    context.watch<BottomPlayProvider>().isPlaying
+                    ? Icons.play_circle_outline_rounded
                         : Icons.pause_circle_outline_rounded,
                     color: Colors.white,
                     size: 70,
@@ -154,11 +156,4 @@ class _BottomPlayState extends State<BottomPlay> {
   }
 }
 
-//  Stack(
-//             children: [
-//               IconButton(
-//                 onPressed: () {},
-//                 icon: const Icon(Icons.clear),
-//               ),
-//             ],
-//           )
+
