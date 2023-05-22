@@ -53,6 +53,7 @@ class _FavoriteSongsState extends State<FavoriteSongs> {
                     onTap: () {
                       context.read<FavSongProvider>().isFav(data);
                       navToPlayMusic(context, _audioPlayer, index);
+                      print("-------------------------${index}---------------------------");
                     },
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(10),

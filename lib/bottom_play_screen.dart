@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_music_player/play_screen.dart';
 import 'package:my_music_player/provider/bottom_play_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class _BottomPlayState extends State<BottomPlay> {
     return InkWell(
       onTap: (){
 
+        navToPlayMusic(context, context.read<BottomPlayProvider>().audioPlayer,  context.read<BottomPlayProvider>().audioPlayer.currentIndex!);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -38,7 +40,9 @@ class _BottomPlayState extends State<BottomPlay> {
           CupertinoButton(
             onPressed: () {
               setState(() {
-                context.read<BottomPlayProvider>().isTrue(false);
+
+                context.read<BottomPlayProvider>().audioPlayer.pause();
+              context.read<BottomPlayProvider>().isTrue(false);
               });
             },
             child: const Icon(

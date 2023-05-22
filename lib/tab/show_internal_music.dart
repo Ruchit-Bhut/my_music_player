@@ -61,8 +61,8 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                   navToPlayMusic(context, audioPlayer, index);
                   context.read<BottomPlayProvider>().isTrue(true);
                 });
-
                 context.read<BottomPlayProvider>().bottomBar(musicModel);
+                print("-------------------------${index}---------------------------");
               },
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10),

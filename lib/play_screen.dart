@@ -62,7 +62,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
             children: AudioRepository.instance.songList
                 .map((e)
             {
-              log("/////////////////////////////${e.uri}////////////////////////////");
+
                      return AudioSource.uri(
                         Uri.parse(e.uri!),
                       );
