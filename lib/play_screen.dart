@@ -42,7 +42,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
 
   // bool _isPlaying = false;
   MusicModel musicModel =
-      songToMusic(AudioRepository().songList[AudioRepository().currentIndex!]);
+      songToMusic(AudioRepository().songList[AudioRepository().currentIndex!],AudioRepository().currentIndex!);
 
   @override
   void initState() {
@@ -107,7 +107,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     AudioRepository().currentIndex = AudioRepository().currentIndex! + 1;
 
     musicModel = songToMusic(
-        AudioRepository().songList[AudioRepository().currentIndex!]);
+        AudioRepository().songList[AudioRepository().currentIndex!],AudioRepository().currentIndex!);
 
     setState(() {
       widget.audioPlayer.seekToNext();
@@ -119,7 +119,7 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     AudioRepository().currentIndex = AudioRepository().currentIndex! - 1;
 
     musicModel = songToMusic(
-        AudioRepository().songList[AudioRepository().currentIndex!]);
+        AudioRepository().songList[AudioRepository().currentIndex!],AudioRepository().currentIndex!);
 
     setState(() {
       widget.audioPlayer.seekToPrevious();

@@ -9,8 +9,6 @@ class BottomPlayProvider with ChangeNotifier {
   final audioPlayer = AudioPlayer();
   late MusicModel musicModel;
 
-
-
   void play() async {
     await audioPlayer.play();
     notifyListeners();
@@ -25,7 +23,7 @@ class BottomPlayProvider with ChangeNotifier {
     AudioRepository().currentIndex = AudioRepository().currentIndex! + 1;
 
     musicModel = songToMusic(
-        AudioRepository().songList[AudioRepository().currentIndex!]);
+        AudioRepository().songList[AudioRepository().currentIndex!],AudioRepository().currentIndex!);
 
     audioPlayer.seekToNext();
     bottomBar(musicModel);
@@ -36,7 +34,7 @@ class BottomPlayProvider with ChangeNotifier {
     AudioRepository().currentIndex = AudioRepository().currentIndex! - 1;
 
     musicModel = songToMusic(
-        AudioRepository().songList[AudioRepository().currentIndex!]);
+        AudioRepository().songList[AudioRepository().currentIndex!],AudioRepository().currentIndex!);
 
     audioPlayer.seekToPrevious();
     bottomBar(musicModel);

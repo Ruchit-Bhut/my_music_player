@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/play_screen.dart';
@@ -42,6 +44,7 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
             image: song.album ?? '',
             uri: song.uri ?? '',
             duration: song.duration!,
+            index: index
           );
 
           final musicModel = context.read<BottomPlayProvider>().musicModel;
@@ -61,9 +64,7 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                   navToPlayMusic(context, audioPlayer, index);
                   context.read<BottomPlayProvider>().isTrue(true);
                 });
-                context.read<BottomPlayProvider>().bottomBar(musicModel);
-                print("-------------------------${index}---------------------------");
-              },
+                context.read<BottomPlayProvider>().bottomBar(musicModel);              },
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: QueryArtworkWidget(

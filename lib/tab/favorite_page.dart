@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/play_screen.dart';
+import 'package:my_music_player/provider/bottom_play_provider.dart';
 import 'package:my_music_player/provider/fav_song_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +20,6 @@ class FavoriteSongs extends StatefulWidget {
 
 class _FavoriteSongsState extends State<FavoriteSongs> {
   final AudioPlayer _audioPlayer = AudioPlayer();
-  final OnAudioQuery audioQuery = OnAudioQuery();
 
   @override
   void initState() {
@@ -39,7 +42,9 @@ class _FavoriteSongsState extends State<FavoriteSongs> {
           ? ListView.builder(
               itemCount: context.watch<FavSongProvider>().songdata.length,
               itemBuilder: (context, index) {
-                final data = context.watch<FavSongProvider>().songdata[index];
+                MusicModel data =
+                    context.watch<FavSongProvider>().songdata[index];
+                log("$index//////////////////---------index----------------");
                 return Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -52,8 +57,10 @@ class _FavoriteSongsState extends State<FavoriteSongs> {
                   child: ListTile(
                     onTap: () {
                       context.read<FavSongProvider>().isFav(data);
-                      navToPlayMusic(context, _audioPlayer, index);
-                      print("-------------------------${index}---------------------------");
+
+                      navToPlayMusic(context, _audioPlayer, data.index);
+                      context.read<BottomPlayProvider>().bottomBar(data);
+                      context.read<BottomPlayProvider>().isTrue(true);
                     },
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
