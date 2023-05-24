@@ -21,6 +21,7 @@ class FavoriteSongs extends StatefulWidget {
 class _FavoriteSongsState extends State<FavoriteSongs> {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
+
   @override
   void initState() {
     super.initState();

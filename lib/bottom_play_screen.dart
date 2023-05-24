@@ -29,9 +29,9 @@ class _BottomPlayState extends State<BottomPlay> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-
-        navToPlayMusic(context, context.read<BottomPlayProvider>().audioPlayer,  context.read<BottomPlayProvider>().audioPlayer.currentIndex!);
+      onTap: () {
+        navToPlayMusic(context, context.read<BottomPlayProvider>().audioPlayer,
+            context.read<BottomPlayProvider>().audioPlayer.currentIndex!);
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -40,9 +40,8 @@ class _BottomPlayState extends State<BottomPlay> {
           CupertinoButton(
             onPressed: () {
               setState(() {
-
                 context.read<BottomPlayProvider>().audioPlayer.pause();
-              context.read<BottomPlayProvider>().isTrue(false);
+                context.read<BottomPlayProvider>().isTrue(false);
               });
             },
             child: const Icon(
@@ -63,7 +62,11 @@ class _BottomPlayState extends State<BottomPlay> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                     child: QueryArtworkWidget(
-                      id: context.watch<BottomPlayProvider>().bottomPlay.first.id,
+                      id: context
+                          .watch<BottomPlayProvider>()
+                          .bottomPlay
+                          .first
+                          .id,
                       type: ArtworkType.AUDIO,
                       keepOldArtwork: true,
                       artworkHeight: 70,
@@ -91,8 +94,8 @@ class _BottomPlayState extends State<BottomPlay> {
                           velocity:
                               const Velocity(pixelsPerSecond: Offset(50, 0)),
                           pauseBetween: const Duration(milliseconds: 1000),
-                          style:
-                              const TextStyle(fontSize: 25, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 25, color: Colors.white),
                         ),
                       if (context
                           .read<BottomPlayProvider>()
@@ -125,7 +128,7 @@ class _BottomPlayState extends State<BottomPlay> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                     context.read<BottomPlayProvider>().isPlayOnChanged();
+                      context.read<BottomPlayProvider>().isPlayOnChanged();
                       if (context.read<BottomPlayProvider>().isPlaying) {
                         context.read<BottomPlayProvider>().audioPlayer.pause();
                       } else {
@@ -135,7 +138,7 @@ class _BottomPlayState extends State<BottomPlay> {
                   },
                   child: Icon(
                     context.watch<BottomPlayProvider>().isPlaying
-                    ? Icons.play_circle_outline_rounded
+                        ? Icons.play_circle_outline_rounded
                         : Icons.pause_circle_outline_rounded,
                     color: Colors.white,
                     size: 70,
@@ -159,5 +162,3 @@ class _BottomPlayState extends State<BottomPlay> {
     );
   }
 }
-
-

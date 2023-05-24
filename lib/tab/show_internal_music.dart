@@ -38,14 +38,13 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
               context.read<BottomPlayProvider>().audioRepo.songList[index];
 
           context.read<BottomPlayProvider>().musicModel = MusicModel(
-            id: song.id,
-            songName: song.displayNameWOExt,
-            artistName: song.artist ?? '<unknown>',
-            image: song.album ?? '',
-            uri: song.uri ?? '',
-            duration: song.duration!,
-            index: index
-          );
+              id: song.id,
+              songName: song.displayNameWOExt,
+              artistName: song.artist ?? '<unknown>',
+              image: song.album ?? '',
+              uri: song.uri ?? '',
+              duration: song.duration!,
+              index: index);
 
           final musicModel = context.read<BottomPlayProvider>().musicModel;
           context.read<BottomPlayProvider>().songLists.add(musicModel);
@@ -64,7 +63,8 @@ class _ShowInternalMusicState extends State<ShowInternalMusic> {
                   navToPlayMusic(context, audioPlayer, index);
                   context.read<BottomPlayProvider>().isTrue(true);
                 });
-                context.read<BottomPlayProvider>().bottomBar(musicModel);              },
+                context.read<BottomPlayProvider>().bottomBar(musicModel);
+              },
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: QueryArtworkWidget(

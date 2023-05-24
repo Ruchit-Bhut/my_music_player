@@ -40,9 +40,9 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
   Duration _position = const Duration();
   Duration _duration = const Duration();
 
-  // bool _isPlaying = false;
-  MusicModel musicModel =
-      songToMusic(AudioRepository().songList[AudioRepository().currentIndex!],AudioRepository().currentIndex!);
+  MusicModel musicModel = songToMusic(
+      AudioRepository().songList[AudioRepository().currentIndex!],
+      AudioRepository().currentIndex!);
 
   @override
   void initState() {
@@ -59,17 +59,11 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     if (widget.audioPlayer.audioSource == null) {
       try {
         widget.audioPlayer.setAudioSource(ConcatenatingAudioSource(
-            children: AudioRepository.instance.songList
-                .map((e)
-            {
-
-                     return AudioSource.uri(
-                        Uri.parse(e.uri!),
-                      );
-                    })
-                .toList()));
-
-
+            children: AudioRepository.instance.songList.map((e) {
+          return AudioSource.uri(
+            Uri.parse(e.uri!),
+          );
+        }).toList()));
       } on Exception {
         log("Error in loading list");
       }
@@ -107,7 +101,8 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     AudioRepository().currentIndex = AudioRepository().currentIndex! + 1;
 
     musicModel = songToMusic(
-        AudioRepository().songList[AudioRepository().currentIndex!],AudioRepository().currentIndex!);
+        AudioRepository().songList[AudioRepository().currentIndex!],
+        AudioRepository().currentIndex!);
 
     setState(() {
       widget.audioPlayer.seekToNext();
@@ -119,7 +114,8 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
     AudioRepository().currentIndex = AudioRepository().currentIndex! - 1;
 
     musicModel = songToMusic(
-        AudioRepository().songList[AudioRepository().currentIndex!],AudioRepository().currentIndex!);
+        AudioRepository().songList[AudioRepository().currentIndex!],
+        AudioRepository().currentIndex!);
 
     setState(() {
       widget.audioPlayer.seekToPrevious();

@@ -28,7 +28,7 @@ class MusicModel {
         image: json['image'],
         uri: json['uri'],
         duration: json['duration'],
-    index: json['index'],
+        index: json['index'],
       );
 
   static Map<String, dynamic> toMap(MusicModel musicModel) => {
@@ -38,20 +38,18 @@ class MusicModel {
         'image': musicModel.image,
         'uri': musicModel.uri,
         'duration': musicModel.duration,
-    "index": musicModel.index,
+        "index": musicModel.index,
       };
 }
 
-MusicModel songToMusic(SongModel song,int index) {
+MusicModel songToMusic(SongModel song, int index) {
   log(song.data);
   return MusicModel(
-    id: song.id,
-    songName: song.displayNameWOExt,
-    artistName: song.artist ?? '<unknown>',
-    image: song.album ?? '',
-    uri: song.uri ?? '',
-    duration: song.duration!,
-    index: index
-
-  );
+      id: song.id,
+      songName: song.displayNameWOExt,
+      artistName: song.artist ?? '<unknown>',
+      image: song.album ?? '',
+      uri: song.uri ?? '',
+      duration: song.duration!,
+      index: index);
 }
