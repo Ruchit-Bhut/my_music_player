@@ -15,7 +15,7 @@ class AudioRepository {
   final _orderType = OrderType.ASC_OR_SMALLER;
   final _uriType = UriType.EXTERNAL;
   final _ignoreCase = true;
-  final List<SongModel> songList = [];
+  final List<SongModel>  songList = [];
   int? currentIndex;
 
   void getAllSongs() {

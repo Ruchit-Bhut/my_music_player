@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_music_player/model/song_model.dart';
 import 'package:my_music_player/play_screen.dart';
 import 'package:my_music_player/provider/bottom_play_provider.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -16,8 +17,6 @@ class BottomPlay extends StatefulWidget {
 }
 
 class _BottomPlayState extends State<BottomPlay> {
-  // bool _isPlayingBottom = false;
-
   @override
   void initState() {
     super.initState();
@@ -26,12 +25,17 @@ class _BottomPlayState extends State<BottomPlay> {
     });
   }
 
+  late MusicModel musicModel;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        navToPlayMusic(context, context.read<BottomPlayProvider>().audioPlayer,
-            context.read<BottomPlayProvider>().audioPlayer.currentIndex!);
+        navToPlayMusic(
+          context,
+          context.read<BottomPlayProvider>().audioPlayer,
+          context.read<BottomPlayProvider>().audioPlayer.currentIndex!,
+        );
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,

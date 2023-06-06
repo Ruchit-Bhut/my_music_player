@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:my_music_player/model/song_model.dart';
@@ -45,7 +43,6 @@ class _FavoriteSongsState extends State<FavoriteSongs> {
               itemBuilder: (context, index) {
                 MusicModel data =
                     context.watch<FavSongProvider>().songdata[index];
-                log("$index//////////////////---------index----------------");
                 return Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),

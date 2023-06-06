@@ -118,12 +118,12 @@ class _HomePageState extends State<HomePage> {
                       ],
                       color: const Color(0xff6b5c71),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(12.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             "Let's Play",
                             style: TextStyle(
@@ -145,8 +145,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            Column(
-              children: const [
+            const Column(
+              children: [
                 Text(
                   'MARSHMELLO',
                   style: TextStyle(

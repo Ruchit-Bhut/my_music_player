@@ -13,6 +13,7 @@ import 'package:text_scroll/text_scroll.dart';
 import 'package:just_audio/just_audio.dart';
 
 navToPlayMusic(BuildContext context, AudioPlayer audioPlayer, int index) {
+
   AudioRepository().currentIndex = index;
   Navigator.push(
     context,
@@ -338,6 +339,11 @@ class _PlayMusicScreenState extends State<PlayMusicScreen> {
                               iconSize: 70,
                               color: Colors.white,
                               onPressed: () {
+                              //   playProvider.isPlayOnChanged()
+                              //   setState(() {
+                              //     widget.audioPlayer.playing =
+                              //   });
+                              // }
                                 playProvider.isPlayOnChanged();
                                 if (playProvider.isPlaying) {
                                   widget.audioPlayer.pause();
